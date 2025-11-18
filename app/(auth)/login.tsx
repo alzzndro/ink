@@ -31,7 +31,7 @@ export default function Login() {
         } else {
             setMessage({ type: 'success', text: 'Welcome back!' });
             // Navigate after successful sign-in (optional)
-            // router.replace('/(tabs)/home');
+            router.replace('/(app)/(tabs)');
         }
 
         setLoading(false);

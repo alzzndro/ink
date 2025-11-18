@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../../../context/AuthContext'; // Adjust path if needed
 
 export default function Home() {
-  const { signOut, user } = useAuth();
+  const { signOut } = useAuth();
 
   const handleSignOut = () => {
     // This will set the user to null
@@ -12,11 +12,36 @@ export default function Home() {
     signOut();
   };
 
+  useEffect(() => {
+    console.log("Hello");
+  }, [])
+
   return (
     <View className="flex-1 justify-center items-center bg-white p-4">
       <Text className="text-2xl font-bold mb-4">Welcome!</Text>
-      <Text className="text-lg text-gray-700 mb-8">
-        You are logged in as: {user?.email}
+      <Text className="text-lg text-black mb-8">
+        Hellow
+      </Text>
+      <Text className="text-lg text-black mb-8">
+        Hellow
+      </Text>
+      <Text className="text-lg text-black mb-8">
+        Hellow
+      </Text>
+      <Text className="text-lg text-black mb-8">
+        Hellow
+      </Text>
+      <Text className="text-lg text-black mb-8">
+        Hellow
+      </Text>
+      <Text className="text-lg text-black mb-8">
+        Hellow
+      </Text>
+      <Text className="text-lg text-black mb-8">
+        Hellow
+      </Text>
+      <Text className="text-lg text-black mb-8">
+        Hellow
       </Text>
 
       <TouchableOpacity

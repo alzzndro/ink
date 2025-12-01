@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "crud",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false, 
     "ios": {
       "supportsTablet": true
     },
@@ -20,7 +20,14 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.pokss133.crud"
+      "package": "com.pokss133.crud",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.INTERNET"
+      ]
     },
     "web": {
       "output": "static",
@@ -41,18 +48,26 @@
           }
         }
       ],
-      "expo-video"
+      "expo-video",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
-      "reactCompiler": true
+      "reactCompiler": false
     },
     "extra": {
-      "router": {},
+      "router": {
+        "origin": false
+      },
       "eas": {
-        "projectId": "26007ed4-85a4-4e73-9225-c40a3af8b0c8"
+        "projectId": "8a9cca2f-ccbd-4616-833d-05d2df0f0911"
       }
     },
-    "owner": "pokss133"
+    "owner": "pokss132"
   }
 }

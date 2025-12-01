@@ -43,7 +43,7 @@ export default function Login() {
 
     return (
         <View className="flex-1 justify-center items-center bg-gray-100 p-4">
-            <Text className="text-5xl font-bold mb-8 text-gray-800">Ink</Text>
+            <Text className="text-5xl font-bold mb-8 text-gray-800">Notiffy</Text>
             <View className="w-full max-w-sm">
                 <Text className="text-sm font-medium text-gray-600 mb-2">Email</Text>
                 <TextInput

@@ -251,7 +251,7 @@ export default function FeedPage() {
 
       {/* Top Bar */}
       <View className="flex-row justify-between items-center mb-4 mt-8">
-        <Text className="text-2xl font-bold text-white">My Posts</Text>
+        <Text className="text-2xl font-bold text-white">My Notes</Text>
         <TouchableOpacity
           onPress={() => signOut()}
           className="bg-red-600 px-3 py-1 rounded-md"
@@ -300,7 +300,7 @@ export default function FeedPage() {
         <View className="flex-1 justify-center items-center bg-black/80 p-4">
           <View className="bg-gray-800 w-full p-6 rounded-xl border border-gray-600">
 
-            <Text className="text-xl font-bold text-white mb-4">Create Post</Text>
+            <Text className="text-xl font-bold text-white mb-4">Create Notes</Text>
 
             <TextInput
               value={title}

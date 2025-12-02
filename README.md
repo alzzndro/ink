@@ -1,6 +1,6 @@
-# 🔔 **Notees**
+# ⬛ **Note --**
 
-A modern and intuitive note-taking mobile application built with **React Native (Expo)** and **Supabase**, designed to provide a clean user experience with a lightweight green-accent theme.
+A precision-engineered note-taking mobile application built with **React Native (Expo)** and **Supabase**, designed to provide a distraction-free workspace with a minimalist industrial dark theme.
 
 ---
 
@@ -8,19 +8,21 @@ A modern and intuitive note-taking mobile application built with **React Native 
 
 ### **Leader**
 
-- **Julito E. Villaraza**
+- **Mark Anthony Parungao**
 
 ### **Members**
 
-- **Loirveal Acoin**
-- **Raymund Elum**
+- **Christian Laurence Quilatquilat**
+- **Cyrus Caluyong**
+- **Kirk Joshua Komatsuzaki**
+- **Josh Jumawan**
 
 ---
 
 ## 📱 **Project Description**
 
-**Notees** is a full-stack mobile app crafted for fast, organized, and media-rich note-keeping.  
-Built with **React Native**, powered by **Supabase**, and styled using **NativeWind**, the app emphasizes simplicity, functionality, and polished UX.
+**Note --** (Note Dash) is a full-stack mobile app crafted for professional, organized, and media-rich note-keeping.  
+Built with **React Native**, powered by **Supabase**, and styled using **NativeWind**, the app abandons colorful distractions for a strict **Slate & Zinc** aesthetic, emphasizing focus and clarity.
 
 ---
 
@@ -30,7 +32,7 @@ Built with **React Native**, powered by **Supabase**, and styled using **NativeW
 - 📝 **Media-Enhanced Notes** — Add text, images, and video loops
 - ☁️ **Cloud Storage** — Files stored and served via Supabase Storage
 - 📂 **Full CRUD** — Create, Read, Update, Delete notes
-- 🎨 **Modern UI/UX** — Clean layout, green-accent theme, smooth animations
+- 🌑 **Industrial UI/UX** — Dark mode interface, sharp typography, and high-contrast layout
 
 ---
 
@@ -38,7 +40,7 @@ Built with **React Native**, powered by **Supabase**, and styled using **NativeW
 
 | Category      | Technology                                 |
 | ------------- | ------------------------------------------ |
-| **Framework** | React Native (Expo SDK 52+)                |
+| **Framework** | React Native (Expo SDK 54)                 |
 | **Language**  | TypeScript                                 |
 | **Styling**   | NativeWind (Tailwind CSS)                  |
 | **Backend**   | Supabase (Auth, Database, Storage)         |
@@ -66,7 +68,7 @@ Ensure you have:
 
 ```bash
 git clone <repository-url>
-cd Notees
+cd Note--
 npm install
 ```
 

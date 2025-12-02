@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "crud",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true
     },
@@ -65,9 +65,8 @@
         "origin": false
       },
       "eas": {
-        "projectId": "26007ed4-85a4-4e73-9225-c40a3af8b0c8"
       }
     },
-    "owner": "pokss133"
+    "owner": "leviozza9"
   }
 }

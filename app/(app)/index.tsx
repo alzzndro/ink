@@ -24,7 +24,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabase';
 
-// Keep Interface intact
 interface Post {
   id: string;
   title: string;
@@ -34,8 +33,8 @@ interface Post {
   user_id?: string;
 }
 
-// REFACTORED: Light & Amber PostItem
-const PostItem = ({ item, user, onDelete, onEdit }: {
+// --- NEW UI: Card Component ---
+const PostCard = ({ item, user, onDelete, onEdit }: {
   item: Post,
   user: any,
   onDelete: (id: string) => void,
@@ -43,71 +42,87 @@ const PostItem = ({ item, user, onDelete, onEdit }: {
 }) => {
   const player = useVideoPlayer(item.media_url ?? "", player => {
     player.loop = true;
+    player.muted = true; // Auto-play muted usually better for feeds
   });
 
   return (
-    // Changed bg to white, added light border and soft shadow
-    <View className="bg-white mb-6 rounded-3xl overflow-hidden border border-gray-100 shadow-sm shadow-gray-200/50">
-      <View className="flex-row justify-between items-start p-5">
-        <View className="flex-1 mr-4">
-          <View className="flex-row items-center mb-2">
-            {/* Avatar changed to amber */}
-            <View className="w-8 h-8 rounded-full bg-amber-100 items-center justify-center mr-2 border border-amber-200">
-              <Text className="text-amber-700 font-bold text-xs">
-                {user?.email?.charAt(0).toUpperCase() || "U"}
-              </Text>
-            </View>
-            <Text className="text-gray-400 text-xs font-medium">
-              {new Date().toLocaleDateString()}
-            </Text>
-          </View>
-          {/* Text colors changed to dark gray */}
-          <Text className="text-xl font-bold text-gray-900 tracking-tight mb-1">{item.title}</Text>
-          <Text className="text-gray-600 leading-relaxed text-sm">{item.description}</Text>
-        </View>
+    <View className="bg-white mb-6 mx-1 rounded-[32px] shadow-sm shadow-emerald-900/10 border border-slate-100 overflow-hidden">
 
-        {/* Action Buttons - lighter backgrounds */}
-        <View className="flex-row bg-gray-50 border border-gray-100 rounded-full p-1">
-          <TouchableOpacity
-            onPress={() => onEdit(item)}
-            className="p-2 bg-white rounded-full mr-1 border border-gray-100 shadow-sm"
-          >
-            {/* Edit icon set to amber */}
-            <Ionicons name="pencil" size={16} color="#d97706" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => onDelete(item.id)}
-            className="p-2 bg-red-50 rounded-full border border-red-100"
-          >
-            <Ionicons name="trash" size={16} color="#ef4444" />
-          </TouchableOpacity>
-        </View>
-      </View>
-
+      {/* 1. MEDIA SECTION (Top of Card) */}
       {item.media_url && (
-        // Background for media container set to soft gray instead of harsh black
-        <View className="w-full bg-gray-50 h-64 relative items-center justify-center">
+        <View className="w-full h-60 bg-slate-50 relative">
           {item.media_type === 'video' ? (
             <VideoView
               player={player}
               style={{ width: '100%', height: '100%' }}
               contentFit="cover"
+              nativeControls={false} // Clean look
             />
           ) : (
             <Image
               source={{ uri: item.media_url }}
-              style={{ width: '100%', height: '100%' }}
+              className="w-full h-full"
               resizeMode="cover"
             />
           )}
+          {/* Media Type Badge */}
+          <View className="absolute top-4 right-4 bg-black/30 backdrop-blur-md px-3 py-1 rounded-full">
+            <Ionicons
+              name={item.media_type === 'video' ? 'videocam' : 'image'}
+              size={12}
+              color="white"
+            />
+          </View>
         </View>
       )}
+
+      {/* 2. CONTENT SECTION */}
+      <View className="p-6">
+
+        {/* Date & Meta */}
+        <View className="flex-row items-center mb-3">
+          <View className="h-6 w-6 rounded-full bg-emerald-100 items-center justify-center mr-2 border border-emerald-200">
+            <Text className="text-[10px] font-bold text-emerald-700">
+              {user?.email?.charAt(0).toUpperCase()}
+            </Text>
+          </View>
+          <Text className="text-emerald-600/60 text-xs font-semibold uppercase tracking-wider">
+            {new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+          </Text>
+        </View>
+
+        {/* Title & Desc */}
+        <Text className="text-2xl font-bold text-emerald-950 mb-2 leading-tight">
+          {item.title}
+        </Text>
+        <Text className="text-slate-500 text-base leading-relaxed mb-6">
+          {item.description}
+        </Text>
+
+        {/* 3. FOOTER ACTIONS (Divider & Buttons) */}
+        <View className="border-t border-slate-100 pt-4 flex-row justify-end space-x-2">
+          <TouchableOpacity
+            onPress={() => onEdit(item)}
+            className="flex-row items-center px-4 py-2 bg-emerald-50 rounded-full"
+          >
+            <Ionicons name="create-outline" size={18} color="#059669" />
+            <Text className="ml-2 text-emerald-700 font-bold text-sm">Edit</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => onDelete(item.id)}
+            className="flex-row items-center px-4 py-2 bg-red-50 rounded-full"
+          >
+            <Ionicons name="trash-outline" size={18} color="#ef4444" />
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
 
 export default function FeedPage() {
-  // --- All Original Logic Kept Intact ---
+  // --- LOGIC UNTOUCHED ---
   const { user, signOut } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [title, setTitle] = useState('');
@@ -117,32 +132,17 @@ export default function FeedPage() {
   const [editPost, setEditPost] = useState<Post | null>(null);
   const [createModalVisible, setCreateModalVisible] = useState(false);
 
-  useEffect(() => {
-    if (user) fetchPosts();
-  }, [user]);
+  useEffect(() => { if (user) fetchPosts(); }, [user]);
 
   const fetchPosts = async () => {
     if (!user) return;
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
-
-    if (error) console.error(error);
-    else setPosts(data || []);
+    const { data, error } = await supabase.from('posts').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
+    if (error) console.error(error); else setPosts(data || []);
   };
 
   const pickMedia = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      quality: 0.7,
-    });
-
-    if (!result.canceled) {
-      setMediaFile(result.assets[0]);
-    }
+    const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.All, allowsEditing: true, quality: 0.7 });
+    if (!result.canceled) setMediaFile(result.assets[0]);
   };
 
   const uploadToSupabase = async (uri: string, type: "image" | "video") => {
@@ -152,61 +152,33 @@ export default function FeedPage() {
     const fileName = `${Date.now()}.${ext}`;
     const path = `uploads/${fileName}`;
     const contentType = type === "video" ? "video/mp4" : ext === "png" ? "image/png" : "image/jpeg";
-
-    const { error } = await supabase.storage
-      .from("post-media")
-      .upload(path, fileData, { contentType, upsert: false });
-
+    const { error } = await supabase.storage.from("post-media").upload(path, fileData, { contentType, upsert: false });
     if (error) throw error;
     const { data } = supabase.storage.from("post-media").getPublicUrl(path);
     return data.publicUrl;
   };
 
   const handleSubmit = async () => {
-    if (!title || !description) {
-      Alert.alert('Error', 'Please fill in title and description');
-      return;
-    }
+    if (!title || !description) { Alert.alert('Error', 'Please fill in title and description'); return; }
     setLoading(true);
     try {
       let mediaUrl: string | undefined;
       let mediaType: 'image' | 'video' | undefined;
-
       if (mediaFile) {
         mediaType = mediaFile.type === 'video' ? 'video' : 'image';
         mediaUrl = await uploadToSupabase(mediaFile.uri, mediaType);
       }
-
-      const { data, error } = await supabase
-        .from('posts')
-        .insert([{
-          title,
-          description,
-          media_url: mediaUrl,
-          media_type: mediaType,
-          user_id: user?.id,
-        }])
-        .select();
-
+      const { data, error } = await supabase.from('posts').insert([{ title, description, media_url: mediaUrl, media_type: mediaType, user_id: user?.id, }]).select();
       if (error) throw error;
       if (data) setPosts(prev => [data[0], ...prev]);
-
-      setTitle('');
-      setDescription('');
-      setMediaFile(null);
-      setCreateModalVisible(false);
+      setTitle(''); setDescription(''); setMediaFile(null); setCreateModalVisible(false);
       Alert.alert("Success", "Post created!");
-    } catch (err: any) {
-      Alert.alert('Error', err.message);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err: any) { Alert.alert('Error', err.message); } finally { setLoading(false); }
   };
 
   const handleDelete = async (id: string) => {
     const { error } = await supabase.from('posts').delete().eq('id', id);
-    if (error) Alert.alert('Error', error.message);
-    else setPosts(posts.filter(p => p.id !== id));
+    if (error) Alert.alert('Error', error.message); else setPosts(posts.filter(p => p.id !== id));
   };
 
   const handleUpdate = async () => {
@@ -215,41 +187,19 @@ export default function FeedPage() {
     try {
       let mediaUrl = editPost.media_url;
       let mediaType = editPost.media_type;
-
       if (mediaFile) {
         mediaType = mediaFile.type === 'video' ? 'video' : 'image';
         mediaUrl = await uploadToSupabase(mediaFile.uri, mediaType);
       }
-
-      const { data, error } = await supabase
-        .from('posts')
-        .update({
-          title: editPost.title,
-          description: editPost.description,
-          media_url: mediaUrl,
-          media_type: mediaType
-        })
-        .eq('id', editPost.id)
-        .select();
-
+      const { data, error } = await supabase.from('posts').update({ title: editPost.title, description: editPost.description, media_url: mediaUrl, media_type: mediaType }).eq('id', editPost.id).select();
       if (error) throw error;
-      if (data && data[0]) {
-        setPosts(prev => prev.map(p => (p.id === editPost.id ? data[0] : p)));
-      }
-
-      setEditPost(null);
-      setMediaFile(null);
+      if (data && data[0]) { setPosts(prev => prev.map(p => (p.id === editPost.id ? data[0] : p))); }
+      setEditPost(null); setMediaFile(null);
       Alert.alert("Success", "Post updated");
-    } catch (err: any) {
-      Alert.alert('Error', err.message);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err: any) { Alert.alert('Error', err.message); } finally { setLoading(false); }
   };
-  // --- End Original Logic ---
 
-
-  // REFACTORED: Shared Form Component (Clean & Amber)
+  // --- NEW UI: Bottom Sheet Form ---
   const renderForm = (isEdit: boolean) => {
     const currentTitle = isEdit ? editPost?.title : title;
     const currentDesc = isEdit ? editPost?.description : description;
@@ -259,79 +209,64 @@ export default function FeedPage() {
     const close = isEdit ? () => setEditPost(null) : () => setCreateModalVisible(false);
 
     return (
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        // Standard dim overlay
-        className="flex-1 justify-end sm:justify-center bg-gray-900/50"
-      >
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} className="flex-1 justify-end bg-emerald-950/40">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          {/* Changed Modal bg to White */}
-          <View className="bg-white w-full rounded-t-[32px] sm:rounded-3xl p-8 h-[85%] sm:h-auto shadow-2xl">
+          <View className="bg-white w-full rounded-t-[40px] p-8 h-[90%] shadow-2xl">
 
-            <View className="flex-row justify-between items-center mb-8">
-              {/* Header text dark */}
-              <Text className="text-3xl font-bold text-gray-900">
-                {isEdit ? "Edit Note" : "Create Note"}
+            {/* Modal Handle */}
+            <View className="items-center mb-8">
+              <View className="w-16 h-1.5 bg-slate-200 rounded-full" />
+            </View>
+
+            <View className="flex-row justify-between items-center mb-6">
+              <Text className="text-3xl font-extrabold text-emerald-950">
+                {isEdit ? "Edit Entry" : "New Entry"}
               </Text>
-              <TouchableOpacity onPress={close} className="bg-gray-100 p-2 rounded-full">
-                <Ionicons name="close" size={24} color="#6b7280" />
+              <TouchableOpacity onPress={close} className="w-10 h-10 bg-slate-100 rounded-full items-center justify-center">
+                <Ionicons name="close" size={20} color="#64748b" />
               </TouchableOpacity>
             </View>
 
-            <View className="space-y-6">
+            <View className="space-y-5">
               <View>
-                {/* Labels changed to subtle amber/brown */}
-                <Text className="text-amber-800 text-xs uppercase font-bold mb-2 ml-1 tracking-wider">Title</Text>
-                {/* Inputs changed to light gray bg with subtle border */}
+                <Text className="text-emerald-700 text-xs font-bold uppercase tracking-widest mb-2 ml-1">Title</Text>
                 <TextInput
                   value={currentTitle}
                   onChangeText={setterTitle}
-                  className="bg-gray-50 border border-gray-200 text-gray-900 p-4 rounded-2xl text-lg font-semibold"
-                  placeholder="What's on your mind?"
-                  placeholderTextColor="#9ca3af"
+                  className="bg-slate-50 border border-slate-200 focus:border-emerald-500 text-emerald-900 p-5 rounded-2xl text-lg font-bold"
+                  placeholder="Give it a headline..."
+                  placeholderTextColor="#94a3b8"
                 />
               </View>
 
               <View>
-                <Text className="text-amber-800 text-xs uppercase font-bold mb-2 ml-1 tracking-wider">Description</Text>
+                <Text className="text-emerald-700 text-xs font-bold uppercase tracking-widest mb-2 ml-1">Thoughts</Text>
                 <TextInput
                   value={currentDesc}
                   onChangeText={setterDesc}
                   multiline
-                  className="bg-gray-50 border border-gray-200 text-gray-900 p-4 rounded-2xl min-h-[120px] text-base pt-4"
-                  placeholder="Add some details..."
-                  placeholderTextColor="#9ca3af"
+                  className="bg-slate-50 border border-slate-200 focus:border-emerald-500 text-slate-700 p-5 rounded-2xl min-h-[120px] text-base leading-6"
+                  placeholder="Write your story here..."
+                  placeholderTextColor="#94a3b8"
                   style={{ textAlignVertical: "top" }}
                 />
               </View>
 
               <View>
-                <Text className="text-amber-800 text-xs uppercase font-bold mb-2 ml-1 tracking-wider">Media</Text>
                 <TouchableOpacity
                   onPress={pickMedia}
-                  // Dashed amber border for the upload zone
-                  className="bg-amber-50/50 border-2 border-dashed border-amber-300 rounded-2xl h-36 items-center justify-center overflow-hidden"
+                  className={`border-2 border-dashed rounded-2xl h-24 items-center justify-center flex-row space-x-3 ${mediaFile ? 'bg-emerald-50 border-emerald-300' : 'bg-slate-50 border-slate-300'}`}
                 >
                   {mediaFile ? (
-                    mediaFile.type === "video" ? (
-                      <View className="items-center">
-                        <Ionicons name="videocam" size={32} color="#d97706" />
-                        <Text className="text-amber-700 font-medium mt-2">Video Selected</Text>
-                      </View>
-                    ) : (
-                      <Image
-                        source={{ uri: mediaFile.uri }}
-                        className="w-full h-full"
-                        resizeMode="cover"
-                      />
-                    )
+                    <>
+                      <Ionicons name="checkmark-circle" size={24} color="#059669" />
+                      <Text className="text-emerald-700 font-bold">Media Attached</Text>
+                    </>
                   ) : (
-                    <View className="items-center justify-center">
-                      <View className="bg-amber-100 p-3 rounded-full mb-2">
-                        <Ionicons name="image-outline" size={24} color="#d97706" />
-                      </View>
-                      <Text className="text-amber-700 font-medium">Tap to add Image or Video</Text>
-                    </View>
+                    <>
+                      <Ionicons name="images-outline" size={24} color="#64748b" />
+                      <Text className="text-slate-500 font-bold">Add Photo or Video</Text>
+                    </>
                   )}
                 </TouchableOpacity>
               </View>
@@ -339,14 +274,18 @@ export default function FeedPage() {
               <TouchableOpacity
                 onPress={action}
                 disabled={loading}
-                // Main button changed to Amber
-                className={`w-full p-4 rounded-2xl mt-2 shadow-lg flex-row justify-center items-center ${loading ? 'bg-amber-400' : 'bg-amber-500 shadow-amber-500/30'
-                  }`}
+                className={`w-full py-5 rounded-2xl mt-4 shadow-xl flex-row justify-center items-center ${loading ? 'bg-emerald-400' : 'bg-emerald-600 shadow-emerald-500/40'}`}
               >
-                {loading && <ActivityIndicator size="small" color="white" className="mr-2" />}
-                <Text className="text-white text-center text-lg font-bold">
-                  {loading ? (isEdit ? 'Saving...' : 'Posting...') : (isEdit ? 'Save Changes' : 'Create Post')}
-                </Text>
+                {loading ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  <>
+                    <Text className="text-white text-lg font-bold mr-2">
+                      {isEdit ? 'Save Updates' : 'Publish Note'}
+                    </Text>
+                    <Ionicons name="arrow-forward" size={20} color="white" />
+                  </>
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -356,80 +295,61 @@ export default function FeedPage() {
   };
 
   return (
-    // Main background set to white
-    <SafeAreaView className="flex-1 bg-white" edges={['top']}>
-      {/* StatusBar set to dark for light background */}
+    <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}>
       <StatusBar style="dark" />
-      <View className="flex-1 bg-white px-4">
+      <View className="flex-1 px-4">
 
-        {/* Header */}
-        <View className="flex-row justify-between items-center py-5 mb-2">
+        {/* --- NEW UI: Modern Header --- */}
+        <View className="flex-row justify-between items-end pb-6 pt-2">
           <View>
-            {/* Header Text Dark */}
-            <Text className="text-4xl font-extrabold text-gray-900 tracking-tight">My Notes</Text>
-            {/* Subtext updated with amber tint */}
-            <Text className="text-amber-700/70 font-medium text-base">Capture your thoughts</Text>
+            <Text className="text-slate-400 font-bold text-xs uppercase tracking-[0.2em] mb-1">Workspace</Text>
+            <Text className="text-4xl font-black text-emerald-950">My Notes</Text>
           </View>
-          <TouchableOpacity
-            onPress={() => signOut()}
-            className="bg-white w-12 h-12 rounded-full items-center justify-center border border-gray-100 shadow-sm"
-          >
-            <Ionicons name="log-out-outline" size={22} color="#ef4444" />
+          <TouchableOpacity onPress={() => signOut()} className="bg-white p-3 flex flex-row gap-3 rounded-2xl shadow-sm border border-slate-100">
+            <Ionicons name="log-out-outline" size={20} color="#ef4444" />
+            <Text>Logout</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Posts List */}
+        {/* --- LIST --- */}
         <FlatList
           data={posts}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <PostItem
+            <PostCard
               item={item}
               user={user}
               onDelete={handleDelete}
-              onEdit={(post) => {
-                setEditPost(post);
-                setMediaFile(null);
-              }}
+              onEdit={(post) => { setEditPost(post); setMediaFile(null); }}
             />
           )}
-          contentContainerStyle={{ paddingBottom: 100, paddingTop: 10 }}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          showsVerticalScrollIndicator={false}
           ListEmptyComponent={
-            <View className="items-center justify-center mt-20 opacity-70">
-              <View className="bg-amber-50 p-6 rounded-full mb-4">
-                <Ionicons name="documents-outline" size={64} color="#d97706" />
+            <View className="items-center justify-center mt-32">
+              <View className="w-20 h-20 bg-emerald-100 rounded-full items-center justify-center mb-6 animate-pulse">
+                <Ionicons name="leaf" size={40} color="#059669" />
               </View>
-              <Text className="text-gray-900 text-xl font-bold mt-4">No notes yet</Text>
-              <Text className="text-gray-500 text-base mt-2 text-center leading-6">Tap the amber button below{'\n'}to create your first note.</Text>
+              <Text className="text-emerald-950 text-2xl font-bold">Fresh Canvas</Text>
+              <Text className="text-slate-400 text-center mt-2 max-w-[200px]">Start your collection by adding a new note below.</Text>
             </View>
           }
-          showsVerticalScrollIndicator={false}
         />
 
-        {/* Floating Action Button - Changed to Amber */}
+        {/* --- NEW UI: FAB (Floating Action Button) --- */}
         <TouchableOpacity
           onPress={() => setCreateModalVisible(true)}
-          className="absolute bottom-10 right-6 bg-amber-500 w-16 h-16 rounded-full justify-center items-center shadow-lg shadow-amber-500/40"
+          className="absolute bottom-8 self-center bg-emerald-600 px-8 py-4 rounded-full shadow-2xl shadow-emerald-600/50 flex-row items-center"
         >
-          <Ionicons name="add" size={36} color="white" />
+          <Ionicons name="add" size={28} color="white" />
+          <Text className="text-white font-bold text-lg ml-2">New Note</Text>
         </TouchableOpacity>
 
-        {/* Modals (Keep logic, just render the new form) */}
-        <Modal
-          visible={createModalVisible}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={() => setCreateModalVisible(false)}
-        >
+        {/* Modals */}
+        <Modal visible={createModalVisible} animationType="slide" transparent={true} onRequestClose={() => setCreateModalVisible(false)}>
           {renderForm(false)}
         </Modal>
-
-        <Modal
-          visible={!!editPost}
-          animationType="slide"
-          transparent={true}
-          onRequestClose={() => setEditPost(null)}
-        >
+        <Modal visible={!!editPost} animationType="slide" transparent={true} onRequestClose={() => setEditPost(null)}>
           {renderForm(true)}
         </Modal>
 

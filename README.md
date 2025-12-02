@@ -1,50 +1,102 @@
-# Welcome to INK 👋
+# 🔔 **Notees**
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern and intuitive note-taking mobile application built with **React Native (Expo)** and **Supabase**, designed to provide a clean user experience with a lightweight green-accent theme.
 
-## Get started
+---
 
-1. Install dependencies
+## 👥 **Group Members**
 
-   ```bash
-   npm install
-   ```
+### **Leader**
 
-2. Start the app
+- **Julito E. Villaraza**
 
-   ```bash
-   npx expo start
-   ```
+### **Members**
 
-In the output, you'll find options to open the app in a
+- **Loirveal Acoin**
+- **Raymund Elum**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 📱 **Project Description**
 
-## Get a fresh project
+**Notees** is a full-stack mobile app crafted for fast, organized, and media-rich note-keeping.  
+Built with **React Native**, powered by **Supabase**, and styled using **NativeWind**, the app emphasizes simplicity, functionality, and polished UX.
 
-When you're ready, run:
+---
+
+## ✨ **Core Features**
+
+- 🔐 **User Authentication** — Secure login and signup powered by Supabase Auth
+- 📝 **Media-Enhanced Notes** — Add text, images, and video loops
+- ☁️ **Cloud Storage** — Files stored and served via Supabase Storage
+- 📂 **Full CRUD** — Create, Read, Update, Delete notes
+- 🎨 **Modern UI/UX** — Clean layout, green-accent theme, smooth animations
+
+---
+
+## 🛠️ **Tech Stack**
+
+| Category      | Technology                                 |
+| ------------- | ------------------------------------------ |
+| **Framework** | React Native (Expo SDK 52+)                |
+| **Language**  | TypeScript                                 |
+| **Styling**   | NativeWind (Tailwind CSS)                  |
+| **Backend**   | Supabase (Auth, Database, Storage)         |
+| **Media**     | Expo Image Picker, Expo Video, File System |
+
+---
+
+## 🚀 **Installation & Setup**
+
+Follow these steps to run the project locally.
+
+---
+
+### **1. Prerequisites**
+
+Ensure you have:
+
+- Node.js (LTS)
+- Git
+- Expo Go (Android/iOS)
+
+---
+
+### **2. Clone the Repository & Install Dependencies**
 
 ```bash
-npm run reset-project
+git clone <repository-url>
+cd Notees
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+### **3. Configure Environment Variables**
 
-To learn more about developing your project with Expo, look at the following resources:
+Create an `.env` file in the project root:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```env
+EXPO_PUBLIC_SUPABASE_URL=your_project_url
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+```
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+### **4. Run the Project**
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npx expo start
+```
+
+Scan the QR code using **Expo Go** to launch the app.
+
+---
+
+## 📦 **Build Command (EAS)**
+
+```bash
+eas build --platform android
+```
+
+---

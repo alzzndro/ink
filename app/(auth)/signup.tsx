@@ -64,41 +64,42 @@ export default function SignUp() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            className="flex-1 bg-white"
+            className="flex-1 bg-slate-50"
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View className="flex-1 justify-center px-8">
 
-                    {/* Icon + Header */}
-                    <View className="mb-12 items-start flex flex-col items-center">
-                        <View className="w-20 h-20 bg-emerald-100 rounded-3xl items-center justify-center shadow-md border border-emerald-200">
-                            <Ionicons name="person-add-outline" size={36} color="#047857" />
+                    {/* Header Section */}
+                    <View className="mb-10">
+                        <View className="w-14 h-14 bg-white rounded-xl items-center justify-center border border-slate-200 shadow-sm mb-5">
+                            <Ionicons name="person-add-outline" size={28} color="#0f172a" />
                         </View>
 
-                        <Text className="text-4xl mt-4 font-extrabold text-emerald-900 tracking-tight">
-                            Create Account
+                        <Text className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">
+                            New User
                         </Text>
-
-                        <Text className="text-emerald-600 mt-1 text-base">
-                            Start capturing your ideas instantly.
+                        <Text className="text-4xl font-black text-slate-900 tracking-tighter">
+                            Join Workspace
+                        </Text>
+                        <Text className="text-slate-500 mt-2 text-base leading-6">
+                            Create your digital ID to start capturing notes.
                         </Text>
                     </View>
 
                     {/* Form Fields */}
-                    <View className="space-y-6">
+                    <View className="space-y-4">
 
                         {/* Full Name */}
                         <View>
-                            <Text className="text-xs font-bold text-emerald-700 uppercase ml-1 mb-2 tracking-wider">
-                                Full Name
+                            <Text className="text-xs font-bold text-slate-700 uppercase mb-2 tracking-wide">
+                                Identity
                             </Text>
-
-                            <View className="flex-row items-center bg-emerald-50 border border-emerald-200 rounded-3xl px-5 py-4 shadow-sm">
-                                <Ionicons name="person-outline" size={20} color="#047857" />
+                            <View className="flex-row items-center bg-white border border-slate-300 rounded-xl px-4 py-4 focus:border-slate-900">
+                                <Ionicons name="id-card-outline" size={20} color="#64748b" />
                                 <TextInput
-                                    className="flex-1 ml-3 text-emerald-900 text-base"
-                                    placeholder="Juan Dela Cruz"
-                                    placeholderTextColor="#6ee7b7"
+                                    className="flex-1 ml-3 text-slate-900 text-base font-medium"
+                                    placeholder="Full Name"
+                                    placeholderTextColor="#94a3b8"
                                     value={fullName}
                                     onChangeText={setFullName}
                                 />
@@ -107,16 +108,15 @@ export default function SignUp() {
 
                         {/* Email */}
                         <View>
-                            <Text className="text-xs font-bold text-emerald-700 uppercase ml-1 mb-2 tracking-wider">
-                                Email Address
+                            <Text className="text-xs font-bold text-slate-700 uppercase mb-2 tracking-wide">
+                                Contact
                             </Text>
-
-                            <View className="flex-row items-center bg-emerald-50 border border-emerald-200 rounded-3xl px-5 py-4 shadow-sm">
-                                <Ionicons name="mail-outline" size={20} color="#047857" />
+                            <View className="flex-row items-center bg-white border border-slate-300 rounded-xl px-4 py-4 focus:border-slate-900">
+                                <Ionicons name="mail-outline" size={20} color="#64748b" />
                                 <TextInput
-                                    className="flex-1 ml-3 text-emerald-900 text-base"
-                                    placeholder="you@example.com"
-                                    placeholderTextColor="#6ee7b7"
+                                    className="flex-1 ml-3 text-slate-900 text-base font-medium"
+                                    placeholder="work@email.com"
+                                    placeholderTextColor="#94a3b8"
                                     value={email}
                                     onChangeText={setEmail}
                                     autoCapitalize="none"
@@ -125,76 +125,59 @@ export default function SignUp() {
                             </View>
                         </View>
 
-                        {/* Password */}
-                        <View>
-                            <Text className="text-xs font-bold text-emerald-700 uppercase ml-1 mb-2 tracking-wider">
-                                Password
-                            </Text>
-
-                            <View className="flex-row items-center bg-emerald-50 border border-emerald-200 rounded-3xl px-5 py-4 shadow-sm">
-                                <Ionicons name="lock-closed-outline" size={20} color="#047857" />
-                                <TextInput
-                                    className="flex-1 ml-3 text-emerald-900 text-base"
-                                    placeholder="Create a password"
-                                    placeholderTextColor="#6ee7b7"
-                                    secureTextEntry={!showPassword}
-                                    value={password}
-                                    onChangeText={setPassword}
-                                />
-                                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                                    <Ionicons
-                                        name={showPassword ? "eye-off-outline" : "eye-outline"}
-                                        size={20}
-                                        color="#047857"
+                        {/* Password Group */}
+                        <View className="flex-row space-x-3">
+                            {/* Password */}
+                            <View className="flex-1">
+                                <Text className="text-xs font-bold text-slate-700 uppercase mb-2 tracking-wide">
+                                    Password
+                                </Text>
+                                <View className="flex-row items-center bg-white border border-slate-300 rounded-xl px-4 py-4 focus:border-slate-900">
+                                    <TextInput
+                                        className="flex-1 text-slate-900 text-base font-medium"
+                                        placeholder="••••••"
+                                        placeholderTextColor="#94a3b8"
+                                        secureTextEntry={!showPassword}
+                                        value={password}
+                                        onChangeText={setPassword}
                                     />
-                                </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
 
-                        {/* Confirm Password */}
-                        <View>
-                            <Text className="text-xs font-bold text-emerald-700 uppercase ml-1 mb-2 tracking-wider">
-                                Confirm Password
-                            </Text>
-
-                            <View className="flex-row items-center bg-emerald-50 border border-emerald-200 rounded-3xl px-5 py-4 shadow-sm">
-                                <Ionicons name="shield-checkmark-outline" size={20} color="#047857" />
-                                <TextInput
-                                    className="flex-1 ml-3 text-emerald-900 text-base"
-                                    placeholder="Confirm password"
-                                    placeholderTextColor="#6ee7b7"
-                                    secureTextEntry={!showConfirm}
-                                    value={confirm}
-                                    onChangeText={setConfirm}
-                                />
-                                <TouchableOpacity onPress={() => setShowConfirm(!showConfirm)}>
-                                    <Ionicons
-                                        name={showConfirm ? "eye-off-outline" : "eye-outline"}
-                                        size={20}
-                                        color="#047857"
+                            {/* Confirm */}
+                            <View className="flex-1">
+                                <Text className="text-xs font-bold text-slate-700 uppercase mb-2 tracking-wide">
+                                    Confirm
+                                </Text>
+                                <View className="flex-row items-center bg-white border border-slate-300 rounded-xl px-4 py-4 focus:border-slate-900">
+                                    <TextInput
+                                        className="flex-1 text-slate-900 text-base font-medium"
+                                        placeholder="••••••"
+                                        placeholderTextColor="#94a3b8"
+                                        secureTextEntry={!showConfirm}
+                                        value={confirm}
+                                        onChangeText={setConfirm}
                                     />
-                                </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     </View>
 
                     {/* Message */}
                     {message.type && (
-                        <View
-                            className={`mt-6 p-3 rounded-xl flex-row items-center justify-center ${message.type === "error"
-                                ? "bg-red-50 border border-red-200"
-                                : "bg-emerald-50 border border-emerald-200"
-                                }`}
-                        >
+                        <View className={`mt-6 p-4 rounded-lg flex-row items-start ${message.type === "error"
+                            ? "bg-red-50 border border-red-100"
+                            : "bg-green-50 border border-green-100"
+                            }`}>
                             <Ionicons
-                                name={message.type === "error" ? "alert-circle" : "checkmark-circle"}
+                                name={message.type === "error" ? "warning" : "checkmark-circle"}
                                 size={20}
-                                color={message.type === "error" ? "#dc2626" : "#047857"}
+                                color={message.type === "error" ? "#ef4444" : "#10b981"}
                             />
                             <Text
-                                className={`ml-2 font-medium ${message.type === "error"
+                                className={`ml-3 font-medium flex-1 ${message.type === "error"
                                     ? "text-red-700"
-                                    : "text-emerald-700"
+                                    : "text-green-700"
                                     }`}
                             >
                                 {message.text}
@@ -203,26 +186,26 @@ export default function SignUp() {
                     )}
 
                     {/* Buttons */}
-                    <View className="mt-10 space-y-4">
+                    <View className="mt-8">
                         <TouchableOpacity
-                            className={`w-full py-4 rounded-3xl shadow-lg flex-row justify-center items-center ${loading
-                                ? "bg-emerald-400"
-                                : "bg-emerald-600 shadow-emerald-400/40"
+                            className={`w-full py-4 rounded-xl shadow-lg flex-row justify-center items-center ${loading
+                                ? "bg-slate-700"
+                                : "bg-slate-900 shadow-slate-900/20"
                                 }`}
                             onPress={handleRegister}
                             disabled={loading}
                         >
                             {loading && <ActivityIndicator color="white" className="mr-2" />}
-                            <Text className="text-white text-center text-lg font-bold">
-                                {loading ? "Creating Account..." : "Create Account"}
+                            <Text className="text-white text-lg font-bold tracking-wide">
+                                {loading ? "Initializing..." : "Create Workspace ID"}
                             </Text>
                         </TouchableOpacity>
 
-                        <View className="flex-row justify-center items-center">
-                            <Text className="text-emerald-600">Already have an account?</Text>
-                            <Pressable onPress={() => router.replace("/(auth)/login")}>
-                                <Text className="text-emerald-800 font-bold text-base ml-1">
-                                    Sign In
+                        <View className="flex-row justify-center items-center mt-8">
+                            <Text className="text-slate-500 font-medium">Already have an ID?</Text>
+                            <Pressable onPress={() => router.replace("/(auth)/login")} className="ml-2 border-b-2 border-slate-900 pb-0.5">
+                                <Text className="text-slate-900 font-bold text-base">
+                                    Access Login
                                 </Text>
                             </Pressable>
                         </View>

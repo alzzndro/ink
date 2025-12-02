@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "crud",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": false, 
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true
     },
@@ -54,7 +54,8 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
-      ]
+      ],
+      "expo-build-properties"
     ],
     "experiments": {
       "typedRoutes": true,

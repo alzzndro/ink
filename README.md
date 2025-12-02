@@ -8,7 +8,7 @@
 
 ## 🏗️ **Project Overview**
 
-**INK.** (formerly _Note --_) is a full-stack mobile application crafted for professional, media-rich data organization.
+**INK.** is a full-stack mobile application crafted for professional, media-rich data organization.
 
 Diverging from the colorful clutter of standard productivity apps, **INK.** adopts a strict **Industrial Dark Theme**. Built on the **Slate & Zinc** palettes of NativeWind, it provides a high-contrast, distraction-free environment designed for focus. It seamlessly integrates text, imagery, and video loops into a cohesive workspace.
 
@@ -93,3 +93,40 @@ cd ink-mobile
 # Install dependencies
 npm install
 ```
+
+### **3. Environment Configuration**
+
+Create a `.env` file in the root directory. You must populate this with your Supabase credentials.
+
+```env
+EXPO_PUBLIC_SUPABASE_URL=your_unique_supabase_url
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### **4. Execution**
+
+Launch the metro bundler:
+
+```bash
+npx expo start
+```
+
+_Press `a` for Android Emulator, `i` for iOS Simulator, or scan the QR code with Expo Go._
+
+---
+
+## 📦 **Build & Distribution**
+
+To generate a production-ready APK/AAB for Android:
+
+```bash
+# Install EAS CLI if not already installed
+npm install -g eas-cli
+
+# Build for Android
+eas build --platform android
+```
+
+---
+
+© 2025 INK. Project. All Rights Reserved.

@@ -8,11 +8,12 @@ import {
     Platform,
     Pressable,
     Text,
-    TextInput,
     TouchableOpacity,
     TouchableWithoutFeedback,
     View,
 } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import InkInput from '../../components/InkInput'; // Adjust path if needed
 import { useAuth } from "../../context/AuthContext";
 
 export default function SignUp() {
@@ -24,9 +25,6 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
 
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirm, setShowConfirm] = useState(false);
-
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<{ type: "success" | "error" | null; text: string }>({
         type: null,
@@ -37,7 +35,7 @@ export default function SignUp() {
         setMessage({ type: null, text: "" });
 
         if (!fullName || !email || !password || !confirm) {
-            return setMessage({ type: "error", text: "All fields are required." });
+            return setMessage({ type: "error", text: "Please fill in all fields." });
         }
 
         if (password !== confirm) {
@@ -64,120 +62,83 @@ export default function SignUp() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            className="flex-1 bg-slate-50"
+            className="flex-1 bg-white"
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View className="flex-1 justify-center px-8">
+                <SafeAreaView className="flex-1 justify-center px-8">
 
-                    {/* Header Section */}
-                    <View className="mb-10">
-                        <View className="w-14 h-14 bg-white rounded-xl items-center justify-center border border-slate-200 shadow-sm mb-5">
-                            <Ionicons name="person-add-outline" size={28} color="#0f172a" />
+                    {/* --- HEADER --- */}
+                    <View className="items-center mb-10">
+                        {/* Outline User Icon */}
+                        <View className="w-16 h-16 bg-white border border-zinc-200 rounded-full items-center justify-center shadow-sm mb-6">
+                            <Ionicons name="person-add-outline" size={28} color="black" />
                         </View>
 
-                        <Text className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">
-                            New User
+                        <Text className="text-5xl font-light text-black tracking-tighter mb-2">
+                            Join Ink.
                         </Text>
-                        <Text className="text-4xl font-black text-slate-900 tracking-tighter">
-                            Join Workspace
-                        </Text>
-                        <Text className="text-slate-500 mt-2 text-base leading-6">
-                            Create your digital ID to start capturing notes.
+                        <Text className="text-zinc-400 text-base font-medium tracking-wide text-center leading-6">
+                            Start your minimalist journey.
                         </Text>
                     </View>
 
-                    {/* Form Fields */}
-                    <View className="space-y-4">
+                    {/* --- FORM FIELDS --- */}
+                    <View className="space-y-5">
 
                         {/* Full Name */}
-                        <View>
-                            <Text className="text-xs font-bold text-slate-700 uppercase mb-2 tracking-wide">
-                                Identity
-                            </Text>
-                            <View className="flex-row items-center bg-white border border-slate-300 rounded-xl px-4 py-4 focus:border-slate-900">
-                                <Ionicons name="id-card-outline" size={20} color="#64748b" />
-                                <TextInput
-                                    className="flex-1 ml-3 text-slate-900 text-base font-medium"
-                                    placeholder="Full Name"
-                                    placeholderTextColor="#94a3b8"
-                                    value={fullName}
-                                    onChangeText={setFullName}
-                                />
-                            </View>
-                        </View>
+                        <InkInput
+                            icon="person-outline"
+                            placeholder="Full Name"
+                            value={fullName}
+                            onChangeText={setFullName}
+                            autoCapitalize="words"
+                        />
 
                         {/* Email */}
-                        <View>
-                            <Text className="text-xs font-bold text-slate-700 uppercase mb-2 tracking-wide">
-                                Contact
-                            </Text>
-                            <View className="flex-row items-center bg-white border border-slate-300 rounded-xl px-4 py-4 focus:border-slate-900">
-                                <Ionicons name="mail-outline" size={20} color="#64748b" />
-                                <TextInput
-                                    className="flex-1 ml-3 text-slate-900 text-base font-medium"
-                                    placeholder="work@email.com"
-                                    placeholderTextColor="#94a3b8"
-                                    value={email}
-                                    onChangeText={setEmail}
-                                    autoCapitalize="none"
-                                    keyboardType="email-address"
-                                />
-                            </View>
-                        </View>
+                        <InkInput
+                            icon="mail-outline"
+                            placeholder="Email Address"
+                            value={email}
+                            onChangeText={setEmail}
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                        />
 
                         {/* Password Group */}
                         <View className="flex-row space-x-3">
-                            {/* Password */}
                             <View className="flex-1">
-                                <Text className="text-xs font-bold text-slate-700 uppercase mb-2 tracking-wide">
-                                    Password
-                                </Text>
-                                <View className="flex-row items-center bg-white border border-slate-300 rounded-xl px-4 py-4 focus:border-slate-900">
-                                    <TextInput
-                                        className="flex-1 text-slate-900 text-base font-medium"
-                                        placeholder="••••••"
-                                        placeholderTextColor="#94a3b8"
-                                        secureTextEntry={!showPassword}
-                                        value={password}
-                                        onChangeText={setPassword}
-                                    />
-                                </View>
-                            </View>
-
-                            {/* Confirm */}
-                            <View className="flex-1">
-                                <Text className="text-xs font-bold text-slate-700 uppercase mb-2 tracking-wide">
-                                    Confirm
-                                </Text>
-                                <View className="flex-row items-center bg-white border border-slate-300 rounded-xl px-4 py-4 focus:border-slate-900">
-                                    <TextInput
-                                        className="flex-1 text-slate-900 text-base font-medium"
-                                        placeholder="••••••"
-                                        placeholderTextColor="#94a3b8"
-                                        secureTextEntry={!showConfirm}
-                                        value={confirm}
-                                        onChangeText={setConfirm}
-                                    />
-                                </View>
+                                <InkInput
+                                    icon="lock-closed-outline"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChangeText={setPassword}
+                                    isPassword={true}
+                                />
                             </View>
                         </View>
+
+                        {/* Confirm Password */}
+                        <InkInput
+                            icon="shield-checkmark-outline"
+                            placeholder="Confirm Password"
+                            value={confirm}
+                            onChangeText={setConfirm}
+                            isPassword={true}
+                        />
+
                     </View>
 
-                    {/* Message */}
+                    {/* --- FEEDBACK MESSAGE --- */}
                     {message.type && (
-                        <View className={`mt-6 p-4 rounded-lg flex-row items-start ${message.type === "error"
-                            ? "bg-red-50 border border-red-100"
-                            : "bg-green-50 border border-green-100"
+                        <View className={`mt-6 p-4 rounded-2xl flex-row items-center justify-center bg-zinc-50 border ${message.type === "error" ? "border-red-100" : "border-green-100"
                             }`}>
                             <Ionicons
-                                name={message.type === "error" ? "warning" : "checkmark-circle"}
+                                name={message.type === "error" ? "alert-circle" : "checkmark-circle"}
                                 size={20}
                                 color={message.type === "error" ? "#ef4444" : "#10b981"}
                             />
                             <Text
-                                className={`ml-3 font-medium flex-1 ${message.type === "error"
-                                    ? "text-red-700"
-                                    : "text-green-700"
+                                className={`ml-3 font-medium ${message.type === "error" ? "text-red-600" : "text-green-600"
                                     }`}
                             >
                                 {message.text}
@@ -185,32 +146,37 @@ export default function SignUp() {
                         </View>
                     )}
 
-                    {/* Buttons */}
-                    <View className="mt-8">
+                    {/* --- ACTIONS --- */}
+                    <View className="mt-8 space-y-6 flex flex-col gap-5">
                         <TouchableOpacity
-                            className={`w-full py-4 rounded-xl shadow-lg flex-row justify-center items-center ${loading
-                                ? "bg-slate-700"
-                                : "bg-slate-900 shadow-slate-900/20"
+                            className={`w-full py-5 rounded-full flex-row justify-center items-center shadow-xl shadow-black/20 ${loading ? "bg-zinc-800" : "bg-black"
                                 }`}
                             onPress={handleRegister}
                             disabled={loading}
                         >
-                            {loading && <ActivityIndicator color="white" className="mr-2" />}
-                            <Text className="text-white text-lg font-bold tracking-wide">
-                                {loading ? "Initializing..." : "Create Workspace ID"}
-                            </Text>
+                            {loading ? (
+                                <ActivityIndicator color="white" />
+                            ) : (
+                                <>
+                                    <Text className="text-white text-lg font-bold tracking-wider mr-2">
+                                        CREATE ACCOUNT
+                                    </Text>
+                                    <Ionicons name="arrow-forward" size={20} color="white" />
+                                </>
+                            )}
                         </TouchableOpacity>
 
-                        <View className="flex-row justify-center items-center mt-8">
-                            <Text className="text-slate-500 font-medium">Already have an ID?</Text>
-                            <Pressable onPress={() => router.replace("/(auth)/login")} className="ml-2 border-b-2 border-slate-900 pb-0.5">
-                                <Text className="text-slate-900 font-bold text-base">
-                                    Access Login
+                        <View className="flex-row justify-center items-center">
+                            <Text className="text-zinc-400 text-base">Already have an account?</Text>
+                            <Pressable onPress={() => router.replace("/(auth)/login")}>
+                                <Text className="text-black font-bold text-base underline decoration-1 underline-offset-4 ml-1">
+                                    Sign In
                                 </Text>
                             </Pressable>
                         </View>
                     </View>
-                </View>
+
+                </SafeAreaView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     );
